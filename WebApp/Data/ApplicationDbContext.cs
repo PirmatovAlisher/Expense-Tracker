@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using WebApp.Models;
 
 namespace WebApp.Data
 {
@@ -9,5 +10,9 @@ namespace WebApp.Data
             : base(options)
         {
         }
+
+        public DbSet<Category > Categories { get; set; }
+
+        public DbSet<Transaction> Transactions { get; set; }
     }
 }
