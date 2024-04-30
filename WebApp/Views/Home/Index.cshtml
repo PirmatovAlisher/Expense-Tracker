@@ -1,8 +1,40 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+	ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@model List<TransactionGetDto>
+
+<table class="table table-hover">
+	<thead>
+		<tr>
+			<th scope="col">Transaction Type</th>
+			<th scope="col">Category</th>
+			<th scope="col">Amount</th>
+			<th scope="col">Comment</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var transaction in Model)
+		{
+			<tr>
+				@if (transaction.TransactionType == TransactionType.Income)
+				{
+					<td class="table-danger">@transaction.TransactionType</td>
+				}
+				else
+				{
+					<td class="table-success">@transaction.TransactionType</td>
+				}
+				<td>@transaction.Category</td>
+				<td>@transaction.CreatedDate</td>
+				<td>@transaction.Amount.ToString("# ### ##0.00")</td>
+				<td>@transaction.Comment</td>
+			</tr>
+		}
+
+	</tbody>
+</table>
+
+<div>
+	<a asp-action="CreateTransaction">Create Transaction</a>
 </div>

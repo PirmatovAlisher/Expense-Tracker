@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Data;
+using WebApp.Data.Interfaces;
 
 namespace WebApp
 {
@@ -19,6 +20,9 @@ namespace WebApp
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
+
+			builder.Services.AddAutoMapper(typeof(Program));
+			builder.Services.AddScoped<IBudgetRepository , BudgetRepository>();
 
             var app = builder.Build();
 

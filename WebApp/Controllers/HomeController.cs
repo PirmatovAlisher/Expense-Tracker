@@ -1,29 +1,46 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using WebApp.Data.Interfaces;
 using WebApp.Models;
+using WebApp.Models.Dtos;
 
 namespace WebApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IBudgetRepository _budgetRepository;
+        private readonly IMapper _mapper;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IBudgetRepository budgetRepository, IMapper mapper)
         {
-            _logger = logger;
+            _budgetRepository = budgetRepository;
+            _mapper = mapper;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var transactions = await _budgetRepository.GetAllTransactionsAsync();
+
+            var mapped = _mapper.Map<List<TransactionGetDto>>(transactions);
+
+            return View(mapped);
         }
 
-        public IActionResult Privacy()
+        [HttpPost]
+        public async Task<IActionResult> CreateTransaction([FromBody] TransactionGetDto transactionGetDto)
         {
-            return View();
+            if(ModelState.IsValid)
+            {
+                var transaction = _mapper.Map<Transaction>(transactionGetDto);
+                await _budgetRepository.MakeTransactionAsync(transaction);
+                return View(transaction);
+            }
+            return BadRequest();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+
+		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

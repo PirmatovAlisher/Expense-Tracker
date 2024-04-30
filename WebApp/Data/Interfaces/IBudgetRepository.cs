@@ -4,13 +4,13 @@ namespace WebApp.Data.Interfaces;
 
 public interface IBudgetRepository
 {
-    List<Transaction> GetAllTransactionsAsync();
+    Task<List<Transaction>> GetAllTransactionsAsync();
 
-    Transaction GetTransactionByIdAsync(int id);
+    Task<Transaction> GetTransactionByIdAsync(int id);
 
-    Transaction MakeTransactionAsync(Transaction transaction);   
+    Task<Transaction> MakeTransactionAsync(Transaction transaction);   
 
-    Transaction UpdateTransactionAsync(int id);
+    Task<Transaction> UpdateTransactionAsync(Transaction transaction);
 
-    Transaction DeleteTransactionAsync(int id);
+    Task<Transaction> DeleteTransactionAsync(int id);
 }
