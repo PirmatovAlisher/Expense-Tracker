@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Data;
 using WebApp.Models;
+using WebApp.Models.ViewModels;
 
 namespace WebApp.Controllers
 {
@@ -48,7 +49,10 @@ namespace WebApp.Controllers
         // GET: Transactions/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryId");
+            //ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryId");
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "Name");
+            //PopulateCategories();
+
             return View();
         }
 
@@ -66,7 +70,7 @@ namespace WebApp.Controllers
                 return RedirectToAction(nameof(Index));
             }
             //ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryId", transaction.CategoryId);
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryId", transaction);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "Name", transaction.CategoryId);
             return View(transaction);
         }
 

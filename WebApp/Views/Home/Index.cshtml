@@ -19,11 +19,11 @@
 			<tr>
 				@if (transaction.TransactionType == TransactionType.Income)
 				{
-					<td class="table-danger">@transaction.TransactionType</td>
+					<td class="table-success">@transaction.TransactionType</td>
 				}
 				else
 				{
-					<td class="table-success">@transaction.TransactionType</td>
+					<td class="table-danger">@transaction.TransactionType</td>
 				}
 				<td>@transaction.Category</td>
 				<td>@transaction.CreatedDate</td>
