@@ -24,6 +24,8 @@ namespace WebApp
 			builder.Services.AddAutoMapper(typeof(Program));
 			builder.Services.AddScoped<IBudgetRepository , BudgetRepository>();
 
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NBaF5cXmZCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWXtecnZVRmBZUUJ+V0Q=");
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
