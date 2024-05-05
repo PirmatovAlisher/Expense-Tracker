@@ -10,9 +10,9 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="AddOrEdit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            <div class="mb-3">
                 <label asp-for="CreatedDate" class="control-label"></label>
                 <input asp-for="CreatedDate" class="form-control" />
                 <span asp-validation-for="CreatedDate" class="text-danger"></span>
@@ -28,14 +28,13 @@
                     <option disabled selected>--Select Category--</option>
                 </select>
             </div>
-            <div class="form-group">
+            <div class="mb-3">
                 <label asp-for="Amount" class="control-label"></label>
                 <input asp-for="Amount" class="form-control" />
                 <span asp-validation-for="Amount" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Comment" class="control-label"></label>
-                <input asp-for="Comment" class="form-control" />
+            <div class="mb-3">
+                <ejs-textbox id="Comment" placeholder="Comment" ejs-for="Comment" floatLabelType="Always"></ejs-textbox>
                 <span asp-validation-for="Comment" class="text-danger"></span>
             </div>
             <div class="form-group">
