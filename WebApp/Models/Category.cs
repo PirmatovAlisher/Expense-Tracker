@@ -7,8 +7,8 @@ public class Category
 {
     public int CategoryId { get; set; }
 
-    [Required]
     [Remote("IsUnique", "Home")]
+    [Required(ErrorMessage = "Name of Category required")]
     public string Name { get; set; } = string.Empty;
 
 }
