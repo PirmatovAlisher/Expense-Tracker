@@ -4,26 +4,6 @@
 	ViewData["isDashboard"] = true;
 }
 
-@* DropDown Selection menu *@
-
-@* <div class="row mb-3">
-	<div class="col-md-4">
-		<div class="widget p-5" style="background-color:#212b36">
-			<form asp-action="Index" method="post">
-				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-				<div class="mb-3">
-					<ejs-daterangepicker id="daterange" startdate="@Model.StartDate" enddate="@Model.EndDate" format="dd.MM.yyyy">
-
-					</ejs-daterangepicker>
-				</div>
-				<div class="mb-3">
-					<ejs-button id="Submit" type="submit" content="Submit" cssClass="e-success"></ejs-button>
-				</div>
-			</form>
-		</div>
-	</div>
-</div> *@
-
 @{
 	int days = (int)DateTime.Now.DayOfWeek;
 	DateTime lastMonth = DateTime.Now.AddMonths(-1);
@@ -61,41 +41,8 @@
 			</div>
 		</div>
 	</div>
-
 </form>
 
-@* <form asp-controller="Dashboard" asp-action="Index" method="post">
-	<div class="row mb-3">
-		<div class="col-md-4">
-			<ejs-daterangepicker id="daterangepicker" name="Value" ejs-for="@Model.Value" format="dd.MM.yyyy">
-			</ejs-daterangepicker>
-			<div id="errorMessage">
-				<span asp-validation-for="Value" class="text-danger fs-6"></span>
-			</div>
-		</div>
-		<div class="col-md-1">
-			<div id="submitbutton">
-				<ejs-button id="submitButton" content="Submit" formaction="/Dashboard/Index"></ejs-button>
-			</div>
-		</div>
-	</div>
-</form> *@
-
-@* <form asp-controller="Dashboard" asp-action="Index" method="post">
-	<div class="row mb-3">
-		<div class="col-md-2 mb-4">
-			<ejs-datepicker id="datepicker1" ejs-for="StartDate" format="dd.MM.yyyy"
-							floatLabelType="Always" placeholder="Start Date"></ejs-datepicker>
-		</div>
-		<div class="col-md-2 mb-4">
-			<ejs-datepicker id="datepicker2" ejs-for="EndDate" format="dd.MM.yyyy"
-							floatLabelType="Always" placeholder="End Date"></ejs-datepicker>
-		</div>
-		<div class="col-md-1 mt-4">
-			<ejs-button id="submitButton" content="Submit" formaction="/Dashboard/Index"></ejs-button>
-		</div>
-	</div>
-</form> *@
 
 
 @* Summary Widget *@
@@ -134,3 +81,79 @@
 		</div>
 	</div>
 </div>
+
+
+@* Doughnut and Spline charts *@
+<div class="row mb-4">
+	<div class="col-md-4">
+		<div class="widget chart">
+			<div class="p-4">
+				<h5>Expense by Category</h5>
+				<ejs-accumulationchart id="doughnutChart" enableSmartLabels>
+					<e-accumulation-series-collection>
+						<e-accumulation-series dataSource="@ViewBag.DoughnutChartData" xName="categoryName" yName="amount" innerRadius="60%" legendShape=Circle>
+							<e-accumulationseries-datalabel name="formatedAmount" visible></e-accumulationseries-datalabel>
+						</e-accumulation-series>
+					</e-accumulation-series-collection>
+					<e-accumulationchart-legendsettings position="Top">
+						<e-legendsettings-textstyle color="#fff" size="1rem"></e-legendsettings-textstyle>
+					</e-accumulationchart-legendsettings>
+					<e-accumulationchart-tooltipsettings enable></e-accumulationchart-tooltipsettings>
+				</ejs-accumulationchart>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-8">
+	</div>
+</div>
+
+@* <div class="row mb-3">
+	<div class="col-md-4">
+		<div class="widget p-5" style="background-color:#212b36">
+			<form asp-action="Index" method="post">
+				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+				<div class="mb-3">
+					<ejs-daterangepicker id="daterange" startdate="@Model.StartDate" enddate="@Model.EndDate" format="dd.MM.yyyy">
+
+					</ejs-daterangepicker>
+				</div>
+				<div class="mb-3">
+					<ejs-button id="Submit" type="submit" content="Submit" cssClass="e-success"></ejs-button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div> *@
+
+@* <form asp-controller="Dashboard" asp-action="Index" method="post">
+	<div class="row mb-3">
+		<div class="col-md-4">
+			<ejs-daterangepicker id="daterangepicker" name="Value" ejs-for="@Model.Value" format="dd.MM.yyyy">
+			</ejs-daterangepicker>
+			<div id="errorMessage">
+				<span asp-validation-for="Value" class="text-danger fs-6"></span>
+			</div>
+		</div>
+		<div class="col-md-1">
+			<div id="submitbutton">
+				<ejs-button id="submitButton" content="Submit" formaction="/Dashboard/Index"></ejs-button>
+			</div>
+		</div>
+	</div>
+</form> *@
+
+@* <form asp-controller="Dashboard" asp-action="Index" method="post">
+	<div class="row mb-3">
+		<div class="col-md-2 mb-4">
+			<ejs-datepicker id="datepicker1" ejs-for="StartDate" format="dd.MM.yyyy"
+							floatLabelType="Always" placeholder="Start Date"></ejs-datepicker>
+		</div>
+		<div class="col-md-2 mb-4">
+			<ejs-datepicker id="datepicker2" ejs-for="EndDate" format="dd.MM.yyyy"
+							floatLabelType="Always" placeholder="End Date"></ejs-datepicker>
+		</div>
+		<div class="col-md-1 mt-4">
+			<ejs-button id="submitButton" content="Submit" formaction="/Dashboard/Index"></ejs-button>
+		</div>
+	</div>
+</form> *@

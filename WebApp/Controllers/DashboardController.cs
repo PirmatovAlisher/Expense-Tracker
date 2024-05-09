@@ -33,7 +33,7 @@ public class DashboardController : Controller
 		//List<Transaction> SelectedTransactions = await _context.Transactions.
 		//	Where(t => t.CreatedDate >= dateRangeHelper.StartDate && t.CreatedDate <= dateRangeHelper.EndDate).
 		//	ToListAsync();
-		List<Transaction> SelectedTransactions = await _context.Transactions.
+		List<Transaction> SelectedTransactions = await _context.Transactions.Include(t => t.Category).
 			Where(t => t.CreatedDate >= DateRangeValue.Value[0] && t.CreatedDate <= DateRangeValue.Value[1]).
 			ToListAsync();
 
@@ -55,6 +55,17 @@ public class DashboardController : Controller
 		var Balance = TotalIncome - TotalExpense;
 		ViewBag.Balance = Balance.ToString("# ### ##0");
 
+		//Doughnut Chart - Expense by Category
+		ViewBag.DoughnutChartData = SelectedTransactions.
+			Where(t => t.TransactionType == TransactionType.Expense).
+			GroupBy(j => j.Category.CategoryId).
+			Select(k => new
+			{
+				categoryName = k.First().Category.Name,
+				amount = k.Sum(j => j.Amount),
+				formatedAmount = k.Sum(j => j.Amount).ToString("# ### ##0"),
+			}).ToList();
+
 		//return View(dateRangeHelper);
 		return View(DateRangeValue);
 	}
@@ -66,7 +77,7 @@ public class DashboardController : Controller
 
 		if (dateRangeHelper.Value.Length == 0) { return View(DateRangeValue); }
 
-		List<Transaction> SelectedTransactions = await _context.Transactions.
+		List<Transaction> SelectedTransactions = await _context.Transactions.Include(t => t.Category).
 			Where(t => t.CreatedDate >= dateRangeHelper.Value[0] && t.CreatedDate <= dateRangeHelper.Value[1]).
 			ToListAsync();
 
@@ -87,6 +98,17 @@ public class DashboardController : Controller
 		// Balance Amount 
 		var Balance = TotalIncome - TotalExpense;
 		ViewBag.Balance = Balance.ToString("# ### ##0");
+
+		//Doughnut Chart - Expense by Category
+		ViewBag.DoughnutChartData = SelectedTransactions.
+			Where(t => t.TransactionType == TransactionType.Expense).
+			GroupBy(j => j.Category.CategoryId).
+			Select(k => new
+			{
+				categoryName = k.First().Category.Name,
+				amount = k.Sum(j => j.Amount),
+				formatedAmount = k.Sum(j => j.Amount).ToString("# ### ##0"),
+			}).ToList();
 
 		return View(dateRangeHelper);
 	}
