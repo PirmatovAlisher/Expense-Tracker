@@ -1,0 +1,136 @@
+﻿@model WebApp.Models.HelperModels.DateRangeHelper
+
+@{
+	ViewData["isDashboard"] = true;
+}
+
+@* DropDown Selection menu *@
+
+@* <div class="row mb-3">
+	<div class="col-md-4">
+		<div class="widget p-5" style="background-color:#212b36">
+			<form asp-action="Index" method="post">
+				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+				<div class="mb-3">
+					<ejs-daterangepicker id="daterange" startdate="@Model.StartDate" enddate="@Model.EndDate" format="dd.MM.yyyy">
+
+					</ejs-daterangepicker>
+				</div>
+				<div class="mb-3">
+					<ejs-button id="Submit" type="submit" content="Submit" cssClass="e-success"></ejs-button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div> *@
+
+@{
+	int days = (int)DateTime.Now.DayOfWeek;
+	DateTime lastMonth = DateTime.Now.AddMonths(-1);
+	var weekStart = DateTime.Now.AddDays(-days);
+	var weekEnd = weekStart.AddDays(6);
+	var monthStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+	var monthEnd = monthStart.AddMonths(1).AddDays(-1);
+	var lastMonthStart = new DateTime(lastMonth.Year, lastMonth.Month, 1);
+	var lastMonthEnd = lastMonthStart.AddMonths(1).AddDays(-1);
+	var lastYearStart = new DateTime(DateTime.Now.Year - 1, 1, 1);
+	var lastYearEnd = new DateTime(DateTime.Now.Year - 1, 12, 31);
+}
+
+<form asp-controller="Dashboard" asp-action="Index" method="post">
+	<div class="row mb-3">
+		<div class="col-md-4">
+			<div class=" control-section">
+				<div id="wrapper" class="daterangepicker-section">
+					<div id="daterangepicker-control">
+						<ejs-daterangepicker id="daterangepicker" name="Value" ejs-for="@Model.Value" format="dd.MM.yyyy">
+							<e-daterangepicker-presets>
+								<e-daterangepicker-preset id="week" label="This Week" start="weekStart" end="weekEnd"></e-daterangepicker-preset>
+								<e-daterangepicker-preset id="month" label="This Month" start="monthStart" end="monthEnd"></e-daterangepicker-preset>
+								<e-daterangepicker-preset id="lastmonth" label="Last Month" start="lastMonthStart" end="lastMonthEnd"></e-daterangepicker-preset>
+								<e-daterangepicker-preset id="year" label="Last Year" start="lastYearStart" end="lastYearEnd"></e-daterangepicker-preset>
+							</e-daterangepicker-presets>
+						</ejs-daterangepicker>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-1">
+			<div id="submitbutton">
+				<ejs-button id="submitButton" content="Submit" formaction="/Dashboard/Index"></ejs-button>
+			</div>
+		</div>
+	</div>
+
+</form>
+
+@* <form asp-controller="Dashboard" asp-action="Index" method="post">
+	<div class="row mb-3">
+		<div class="col-md-4">
+			<ejs-daterangepicker id="daterangepicker" name="Value" ejs-for="@Model.Value" format="dd.MM.yyyy">
+			</ejs-daterangepicker>
+			<div id="errorMessage">
+				<span asp-validation-for="Value" class="text-danger fs-6"></span>
+			</div>
+		</div>
+		<div class="col-md-1">
+			<div id="submitbutton">
+				<ejs-button id="submitButton" content="Submit" formaction="/Dashboard/Index"></ejs-button>
+			</div>
+		</div>
+	</div>
+</form> *@
+
+@* <form asp-controller="Dashboard" asp-action="Index" method="post">
+	<div class="row mb-3">
+		<div class="col-md-2 mb-4">
+			<ejs-datepicker id="datepicker1" ejs-for="StartDate" format="dd.MM.yyyy"
+							floatLabelType="Always" placeholder="Start Date"></ejs-datepicker>
+		</div>
+		<div class="col-md-2 mb-4">
+			<ejs-datepicker id="datepicker2" ejs-for="EndDate" format="dd.MM.yyyy"
+							floatLabelType="Always" placeholder="End Date"></ejs-datepicker>
+		</div>
+		<div class="col-md-1 mt-4">
+			<ejs-button id="submitButton" content="Submit" formaction="/Dashboard/Index"></ejs-button>
+		</div>
+	</div>
+</form> *@
+
+
+@* Summary Widget *@
+<div class="row mb-4">
+	<div class="col-md-4">
+		<div class="d-flex flex-row widget summary income">
+			<div class="d-flex flex-column justify-content-center p-5">
+				<i class="fa-solid fa-dollar-sign fa-2xl"></i>
+			</div>
+			<div class="d-flex flex-column m-auto py-3">
+				<span class="lead">Total Income</span>
+				<h2 class="display-6 fw-bold">@ViewBag.TotalIncome</h2>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="d-flex flex-row widget summary expense">
+			<div class="d-flex flex-column justify-content-center p-5">
+				<i class="fa-solid fa-dollar-sign fa-2xl"></i>
+			</div>
+			<div class="d-flex flex-column m-auto py-3">
+				<span class="lead">Total Expense</span>
+				<h2 class="display-6 fw-bold">@ViewBag.TotalExpense</h2>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="d-flex flex-row widget summary balance">
+			<div class="d-flex flex-column justify-content-center p-5">
+				<i class="fa-solid fa-dollar-sign fa-2xl"></i>
+			</div>
+			<div class="d-flex flex-column m-auto py-3">
+				<span class="lead">Balance</span>
+				<h2 class="display-6 fw-bold">@ViewBag.Balance</h2>
+			</div>
+		</div>
+	</div>
+</div>
