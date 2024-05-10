@@ -64,7 +64,52 @@ public class DashboardController : Controller
 				categoryName = k.First().Category.Name,
 				amount = k.Sum(j => j.Amount),
 				formatedAmount = k.Sum(j => j.Amount).ToString("# ### ##0"),
-			}).ToList();
+			}).
+			OrderByDescending(l => l.amount).
+			ToList();
+
+		// Spline Chart - Income vs Expense
+
+		// Income
+		List<SplineChartData> IncomeSummary = SelectedTransactions.
+			Where(t => t.TransactionType == TransactionType.Income).
+			GroupBy(j => j.CreatedDate).
+			Select(l => new SplineChartData()
+			{
+				day = l.First().CreatedDate.ToString("dd.MM"),
+				income = l.Sum(j => j.Amount)
+			}).
+			ToList();
+
+		// Expense
+		List<SplineChartData> ExpenseSummary = SelectedTransactions.
+			Where(t => t.TransactionType == TransactionType.Expense).
+			GroupBy(j => j.CreatedDate).
+			Select(l => new SplineChartData()
+			{
+				day = l.First().CreatedDate.ToString("dd.MM"),
+				expense = l.Sum(j => j.Amount)
+			}).
+			ToList();
+
+		// Combine Income & Expense
+		int numberOfDays = DateRangeValue.Value[1].Day - DateRangeValue.Value[0].Day;
+
+		string[] Last7Days = Enumerable.Range(0, numberOfDays).
+			Select( i => DateRangeValue.Value[0].AddDays(i).
+			ToString("dd.MM")).ToArray();
+
+		ViewBag.SplineChartDate = from day in Last7Days
+								  join income in IncomeSummary on day equals income.day into dayIncomeJoined
+								  from income in dayIncomeJoined.DefaultIfEmpty()
+								  join expense in ExpenseSummary on day equals expense.day into expenseJoined
+								  from expense in expenseJoined.DefaultIfEmpty()
+								  select new
+								  {
+									  day = day,
+									  income = income == null ? 0 : income.income,
+									  expense = expense == null ? 0 : expense.expense,
+								  };
 
 		//return View(dateRangeHelper);
 		return View(DateRangeValue);
@@ -108,8 +153,62 @@ public class DashboardController : Controller
 				categoryName = k.First().Category.Name,
 				amount = k.Sum(j => j.Amount),
 				formatedAmount = k.Sum(j => j.Amount).ToString("# ### ##0"),
-			}).ToList();
+			}).
+			OrderByDescending(l => l.amount).
+			ToList();
+
+		// Spline Chart - Income vs Expense
+
+		// Income
+		List<SplineChartData> IncomeSummary = SelectedTransactions.
+			Where(t=> t.TransactionType == TransactionType.Income).
+			GroupBy(j => j.CreatedDate).
+			Select(l => new SplineChartData()
+			{
+				day = l.First().CreatedDate.ToString("dd.MM"),
+				income = l.Sum(j => j.Amount)
+			}).
+			ToList();
+
+		// Expense
+		List<SplineChartData> ExpenseSummary = SelectedTransactions.
+			Where(t=> t.TransactionType == TransactionType.Expense).
+			GroupBy(j => j.CreatedDate).
+			Select(l => new SplineChartData()
+			{
+				day = l.First().CreatedDate.ToString("dd.MM"),
+				expense = l.Sum(j => j.Amount)
+			}).
+			ToList();
+
+		// Combine Income & Expense
+		TimeSpan numberOfDays = dateRangeHelper.Value[1] - dateRangeHelper.Value[0];
+
+		string[] Last7Days = Enumerable.Range(0, numberOfDays.Days).
+			Select(i => dateRangeHelper.Value[0].AddDays(i).
+			ToString("dd.MM")).ToArray();
+
+		ViewBag.SplineChartDate = from day in Last7Days
+								  join income in IncomeSummary on day equals income.day into dayIncomeJoined
+								  from income in dayIncomeJoined.DefaultIfEmpty()
+								  join expense in ExpenseSummary on day equals expense.day into expenseJoined
+								  from expense in expenseJoined.DefaultIfEmpty()
+								  select new
+								  {
+									  day = day,
+									  income = income == null ? 0 : income.income,
+									  expense = expense == null ? 0 : expense.expense,
+								  };
+
+
 
 		return View(dateRangeHelper);
 	}
+}
+
+public class SplineChartData
+{
+	public string day;
+	public double income;
+	public double expense;
 }
