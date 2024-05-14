@@ -91,7 +91,7 @@
 	<div class="col-md-4">
 		<div class="widget chart">
 			<div class="p-4">
-				<h5>Expense by Category</h5>
+				<h5 class="fw-bold">Expense by Category</h5>
 				<ejs-accumulationchart id="doughnutChart" enableSmartLabels>
 					<e-accumulation-series-collection>
 						<e-accumulation-series dataSource="@ViewBag.DoughnutChartData" xName="categoryName" yName="amount" innerRadius="60%" legendShape=Circle>
@@ -109,14 +109,14 @@
 	<div class="col-md-8">
 		<div class="widget chart">
 			<div class="p-4">
-				<h5>Expense by Category</h5>
+				<h5 class="fw-bold">Expense by Category</h5>
 				<ejs-chart id="spline-chart" palettes="@(new string[]{"#54ffa9","#ffe91a"} )">
 					<e-chart-primaryxaxis valueType="Category">
 						<e-majorgridlines width="0"></e-majorgridlines>
 						<e-majorticklines width="0"></e-majorticklines>
 					</e-chart-primaryxaxis>
 					<e-chart-primaryyaxis>
-						<e-majorgridlines  width="1" color="#32414d" dashArray="3,5"></e-majorgridlines>
+						<e-majorgridlines width="1" color="#32414d" dashArray="3,5"></e-majorgridlines>
 						<e-majorticklines width="0"></e-majorticklines>
 						<e-linestyle width="0"></e-linestyle>
 					</e-chart-primaryyaxis>
@@ -136,6 +136,38 @@
 					</e-chart-legendsettings>
 					<e-chart-tooltipsettings enable shared></e-chart-tooltipsettings>
 				</ejs-chart>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+@* Recent Transactions and More *@
+<div class="row">
+	<div class="col-md-6">
+		<div class="widget">
+			<div class="p-4">
+				<h5 class="fw-bold">Transactions in Timespan</h5>
+			</div>
+			<div class="px-4 pb-2">
+				<ejs-grid id="recent-transactions" dataSource="@ViewBag.RecentTransactions" gridLines="None" 
+				allowSorting="true" allowPaging="true">
+					<e-grid-pagesettings pageSize="5"></e-grid-pagesettings>
+					<e-grid-columns>
+						<e-grid-column headerText="Transaction Type" field="FormatedTransactionType"></e-grid-column>
+						<e-grid-column headerText="Category" field="CategoryName"></e-grid-column>
+						<e-grid-column headerText="Date" field="CreatedDate" format="dd.MM.yyyy"></e-grid-column>
+						<e-grid-column headerText="Amount" field="FormatedAmount" textalign=Right></e-grid-column>
+						@* <e-grid-column headerText="Comment" field="Comment"></e-grid-column> *@
+					</e-grid-columns>
+				</ejs-grid>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-6 ">
+		<div class="widget h-100">
+			<div class="d-flex justify-content-center align-items-center h-100">
+				<span><i class="fa-solid fa-plus fa-2xl"></i> Widget</span>
 			</div>
 		</div>
 	</div>

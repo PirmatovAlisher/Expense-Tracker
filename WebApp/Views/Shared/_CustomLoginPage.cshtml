@@ -1,0 +1,37 @@
+﻿﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<ul class="navbar-nav list-group list-group-horizontal">
+	@if (SignInManager.IsSignedIn(User))
+	{
+		@* <li class="nav-item">
+	<a class="nav-link text-dark fs-6" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@User.Identity?.Name</a>
+	</li> *@
+		<li class="nav-item mt-1">
+			<i class="fa-solid fa-bell "></i>
+		</li>
+		<li class="nav-item mt-1">
+			<i class="fa-solid fa-message">
+				@* <span class="badge badge-primary badge-pill fs-6">14</span> *@
+			</i>
+		</li>
+		<li class="nav-item">
+			<form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "/", new { area = "" })">
+				<button type="submit" class="btn btn-link border-0 btn-outline-danger text-white">
+					<i class="fa-solid fa-right-from-bracket"></i>
+				</button>
+			</form>
+		</li>
+
+	}
+	else
+	{
+		<li class="nav-item" style="margin-right:30px;">
+			<a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Register">Register</a>
+		</li>
+		<li class="nav-item text-white">
+			<a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Login">Login</a>
+		</li>
+	}
+</ul>

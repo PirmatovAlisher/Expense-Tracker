@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Data;
 using WebApp.Models;
@@ -6,6 +7,7 @@ using WebApp.Models.HelperModels;
 
 namespace WebApp.Controllers;
 
+[Authorize]
 public class DashboardController : Controller
 {
 	private readonly ApplicationDbContext _context;
@@ -95,11 +97,11 @@ public class DashboardController : Controller
 		// Combine Income & Expense
 		int numberOfDays = DateRangeValue.Value[1].Day - DateRangeValue.Value[0].Day;
 
-		string[] Last7Days = Enumerable.Range(0, numberOfDays).
+		string[] PerioudOfTime = Enumerable.Range(0, numberOfDays).
 			Select( i => DateRangeValue.Value[0].AddDays(i).
 			ToString("dd.MM")).ToArray();
 
-		ViewBag.SplineChartDate = from day in Last7Days
+		ViewBag.SplineChartDate = from day in PerioudOfTime
 								  join income in IncomeSummary on day equals income.day into dayIncomeJoined
 								  from income in dayIncomeJoined.DefaultIfEmpty()
 								  join expense in ExpenseSummary on day equals expense.day into expenseJoined
@@ -110,6 +112,15 @@ public class DashboardController : Controller
 									  income = income == null ? 0 : income.income,
 									  expense = expense == null ? 0 : expense.expense,
 								  };
+
+		//ViewBag.RecentTransactions = await _context.Transactions.
+		//	Include(t => t.Category).
+		//	OrderByDescending(t => t.CreatedDate).
+		//	Take(5).
+		//	ToListAsync();
+
+		// Transactions in TimeSpan
+		ViewBag.RecentTransactions = SelectedTransactions;
 
 		//return View(dateRangeHelper);
 		return View(DateRangeValue);
@@ -184,11 +195,11 @@ public class DashboardController : Controller
 		// Combine Income & Expense
 		TimeSpan numberOfDays = dateRangeHelper.Value[1] - dateRangeHelper.Value[0];
 
-		string[] Last7Days = Enumerable.Range(0, numberOfDays.Days).
+		string[] PerioudOfTime = Enumerable.Range(0, numberOfDays.Days).
 			Select(i => dateRangeHelper.Value[0].AddDays(i).
 			ToString("dd.MM")).ToArray();
 
-		ViewBag.SplineChartDate = from day in Last7Days
+		ViewBag.SplineChartDate = from day in PerioudOfTime
 								  join income in IncomeSummary on day equals income.day into dayIncomeJoined
 								  from income in dayIncomeJoined.DefaultIfEmpty()
 								  join expense in ExpenseSummary on day equals expense.day into expenseJoined
@@ -200,6 +211,8 @@ public class DashboardController : Controller
 									  expense = expense == null ? 0 : expense.expense,
 								  };
 
+		// Transactions in TimeSpan
+		ViewBag.RecentTransactions = SelectedTransactions;
 
 
 		return View(dateRangeHelper);
